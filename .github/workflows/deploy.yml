@@ -19,7 +19,10 @@ jobs:
           SERVER_IP: "82.202.139.185"
           USER: "user1"  # Замените на вашего пользователя на сервере
         run: |
+          mkdir  ~/.ssh/
+          chmod 700  ~/.ssh/
           echo "$PRIVATE_KEY" >  ~/.ssh/id_rsa.pub
+          chown 644 ~/.ssh/id_rsa.pub
           echo "$PRIVATE_KEY"
           chmod 600 private_key
           ssh -o StrictHostKeyChecking=no  $USER@$SERVER_IP "
