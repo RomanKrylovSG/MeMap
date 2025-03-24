@@ -1,0 +1,27 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Server
+        env:
+          PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          SERVER_IP: "82.202.139.185"
+          USER: "user1"  # Замените на вашего пользователя на сервере
+        run: |
+          echo "$PRIVATE_KEY" > private_key
+          chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key $USER@$SERVER_IP "
+            cd /var/www/MeMap &&
+            git pull origin main &&
+            echo 'Deployed successfully'
+          "
