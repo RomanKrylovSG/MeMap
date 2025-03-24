@@ -19,10 +19,10 @@ jobs:
           SERVER_IP: "82.202.139.185"
           USER: "user1"  # Замените на вашего пользователя на сервере
         run: |
-          echo "$PRIVATE_KEY" > private_key
+          echo "$PRIVATE_KEY" >  ~/.ssh/id_rsa.pub
           echo "$PRIVATE_KEY"
           chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key $USER@$SERVER_IP "
+          ssh -o StrictHostKeyChecking=no  $USER@$SERVER_IP "
             cd /var/www/MeMap &&
             git pull origin main &&
             echo 'Deployed successfully'
