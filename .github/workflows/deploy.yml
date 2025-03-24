@@ -27,7 +27,7 @@ jobs:
       - name: Deploy to Server
         run: |
           # Подключаемся к серверу и выполняем команды
-          ssh -i ~/.ssh/id_rsa user@82.202.139.185 "
+          ssh -i ~/.ssh/id_rsa user1@82.202.139.185 "
             cd /var/www/MeMap &&
             git pull origin main &&
             echo 'Deployed successfully'
