@@ -7,25 +7,32 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest  
-    environment: SERVER_SSH_KEY  # Replace with your environment name (e.g., "production")
+    runs-on: ubuntu-latest
+    environment: SERVER_SSH_KEY  # Укажите имя вашего окружения, где хранится SERVER_SSH_KEY
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Deploy to Server
-        env:
-          PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          SERVER_IP: "82.202.139.185"
-          USER: "user1"  # Замените на вашего пользователя на сервере
+      - name: Set up SSH
         run: |
-          mkdir  ~/.ssh/
-          chmod 700  ~/.ssh/
-          echo "$PRIVATE_KEY" >  ~/.ssh/id_rsa.pub
-          # chown 644 ~/.ssh/id_rsa.pub
-          echo "$PRIVATE_KEY"
-          ssh -o StrictHostKeyChecking=no  $USER@$SERVER_IP "
+          # Создаём директорию для SSH
+          mkdir -p ~/.ssh
+          # Записываем приватный ключ из секрета в файл
+          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
+          # Устанавливаем правильные права доступа
+          chmod 600 ~/.ssh/id_rsa
+          # Добавляем сервер в known_hosts, чтобы избежать проверки ключа хоста
+          ssh-keyscan -H 82.202.139.185 >> ~/.ssh/known_hosts
+
+      - name: Deploy to Server
+        run: |
+          # Подключаемся к серверу и выполняем команды
+          ssh -i ~/.ssh/id_rsa user@82.202.139.185 "
             cd /var/www/MeMap &&
             git pull origin main &&
             echo 'Deployed successfully'
           "
+
+
+
+
