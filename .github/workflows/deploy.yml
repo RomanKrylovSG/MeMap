@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  
     environment: SERVER_SSH_KEY  # Replace with your environment name (e.g., "production")
     steps:
       - name: Checkout code
@@ -19,9 +19,7 @@ jobs:
           SERVER_IP: "82.202.139.185"
           USER: "user1"  # Замените на вашего пользователя на сервере
         run: |
-          echo $(env)
           echo "$PRIVATE_KEY" > private_key
-          cat private_key
           echo "$PRIVATE_KEY"
           chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key $USER@$SERVER_IP "
