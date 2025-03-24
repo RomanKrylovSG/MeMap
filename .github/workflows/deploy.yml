@@ -22,9 +22,8 @@ jobs:
           mkdir  ~/.ssh/
           chmod 700  ~/.ssh/
           echo "$PRIVATE_KEY" >  ~/.ssh/id_rsa.pub
-          chown 644 ~/.ssh/id_rsa.pub
+          # chown 644 ~/.ssh/id_rsa.pub
           echo "$PRIVATE_KEY"
-          chmod 600 private_key
           ssh -o StrictHostKeyChecking=no  $USER@$SERVER_IP "
             cd /var/www/MeMap &&
             git pull origin main &&
